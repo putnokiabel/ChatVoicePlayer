@@ -1,9 +1,8 @@
 package me.jagar.chatvoiceplayerlibrary;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.os.Handler;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -14,7 +13,6 @@ import java.io.IOException;
 public class FileUtils {
 
     public static void updateVisualizer(final Context context, final File file, final PlayerVisualizerSeekbar playerVisualizerSeekbar){
-        Log.e(" BYTES", "CALLED");
         new AsyncTask<Void, Void, byte[]>() {
             @Override
             protected byte[] doInBackground(Void... voids) {
@@ -24,9 +22,8 @@ public class FileUtils {
             @Override
             protected void onPostExecute(final byte[] bytes) {
                 super.onPostExecute(bytes);
-                Log.e("BYTES", String.valueOf(bytes.length));
 
-                ((Activity) context).runOnUiThread(new Runnable() {
+                new Handler(context.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
                         playerVisualizerSeekbar.setBytes(bytes);
